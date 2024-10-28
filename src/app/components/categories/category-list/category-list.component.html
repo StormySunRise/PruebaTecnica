@@ -22,7 +22,7 @@
         <tr *ngFor="let favorite of favorites">
           <td>{{ favorite.id }}</td>
           <td>{{ favorite.producto.nombre }}</td>
-          <td>{{ favorite.producto.precio | currency }}</td>
+          <td [ngStyle]="{'color': totalpromedio < favorite.producto.precio ? 'red' : 'black' }">{{ favorite.producto.precio | currency }}</td>
           <td>
             <button (click)="deleteFavorite(favorite.id)">Eliminar</button>
           </td>

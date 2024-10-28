@@ -14,6 +14,7 @@ export class CategoryListComponent implements OnInit  {
   selectedCategory: any;
   public apiUrl = environment.apiUrl;
   favorites: any[] = [];
+  public totalpromedio: number = 0;
 
   constructor(
     private categoriesService: CategoriesService,
@@ -23,12 +24,12 @@ export class CategoryListComponent implements OnInit  {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.getFavoritesList();
   }
 
   async loadCategories() {
     this.categories = await this.categoriesService.getCategories(this.apiUrl);
     console.log(this.categories);
-    this.getFavoritesList();
     
   }
 
@@ -45,8 +46,21 @@ export class CategoryListComponent implements OnInit  {
 
   async getFavoritesList(){
     this.favorites = await this.categoriesService.getFavorites(this.apiUrl);
+    this.promedio();
     console.log(this.favorites);
     
+  }
+  
+  promedio(): number {
+    if(this.favorites.length > 0){
+      
+      const total = this.favorites.flatMap(b => b.producto).reduce((valor, producto) => valor + producto.precio, 0);
+      console.log(total);
+      
+      this.totalpromedio = total / this.favorites.length;
+      console.log(this.totalpromedio);
+    }
+      return this.totalpromedio ;
   }
   
   async deleteFavorite(id: number) {
